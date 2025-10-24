@@ -1,0 +1,36 @@
+# ========================
+# Node.js / Backend
+# ========================
+backend/node_modules/
+backend/.env
+backend/dist/
+backend/build/
+backend/.DS_Store
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+
+# ========================
+# Frontend
+# ========================
+frontend/node_modules/
+frontend/.env
+frontend/dist/
+frontend/build/
+frontend/.DS_Store
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# ========================
+# OS / IDE / Misc
+# ========================
+*.log
+*.lock
+*.tmp
+*.swp
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.iml
