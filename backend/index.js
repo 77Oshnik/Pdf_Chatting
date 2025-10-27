@@ -3,6 +3,7 @@ const dotenv=require('dotenv');
 const path=require('path');
 const cors=require('cors');
 const uploadRoutes=require('./routes/uploadRoutes');
+const queryRoutes=require('./routes/queryRoutes');
 
 
 // Load env from backend/.env and fallback to project root .env
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use("/api", uploadRoutes);
+app.use("/api", queryRoutes);
 
 // Healthcheck
 app.get('/api/health', (req, res) => {

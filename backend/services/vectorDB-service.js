@@ -23,9 +23,11 @@ const getIndex = () => {
   return getPinecone().Index(indexName);
 };
 
-exports.storeVectors = async (vectorizedChunks = []) => {
+exports.storeVectors = async (vectorizedChunks = [], fileId, fileName) => {
   console.log(`\n🚀 Starting vector storage process...`);
   console.log(`📦 Total vectors to store: ${vectorizedChunks.length}`);
+  console.log(`🆔 File ID: ${fileId}`);
+  console.log(`📄 File Name: ${fileName}`);
   
   if (!Array.isArray(vectorizedChunks)) {
     throw new TypeError("vectorizedChunks must be an array");
@@ -35,9 +37,14 @@ exports.storeVectors = async (vectorizedChunks = []) => {
   
   console.log("🔄 Preparing vectors for upsert...");
   const vectors = vectorizedChunks.map((chunk, i) => ({
-    id: `chunk-${Date.now()}-${i}`,
+    id: `${fileId}-chunk-${i}`,
     values: chunk.embedding,
-    metadata: { text: chunk.text },
+    metadata: { 
+      text: chunk.text,
+      fileId: fileId,
+      fileName: fileName,
+      chunkIndex: i
+    },
   }));
   
   console.log(`📤 Upserting ${vectors.length} vectors to Pinecone...`);

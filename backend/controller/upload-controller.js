@@ -1,5 +1,6 @@
 // src/controllers/uploadController.js
 const { validationResult } = require("express-validator");
+const crypto = require("crypto");
 const { extractTextFromPDF } = require("../services/pdfTextExtraction-service");
 const { chunkText } = require("../services/textChunking-service");
 const { getEmbeddings } = require("../services/embedding-service");
@@ -29,6 +30,11 @@ exports.uploadPDF = async (req, res) => {
 		}
 		console.log(`✅ File received: ${req.file.originalname} (${(req.file.size / 1024).toFixed(2)} KB)`);
 
+		// Generate unique file ID
+		const fileId = crypto.randomUUID();
+		const fileName = req.file.originalname;
+		console.log(`🆔 Generated File ID: ${fileId}`);
+
 		// Step 3: Extract text
 		console.log("\n📋 Step 3: Extracting text from PDF...");
 		const filePath = req.file.path;
@@ -44,7 +50,7 @@ exports.uploadPDF = async (req, res) => {
 
 		// Step 6: Store vectors in Pinecone
 		console.log("\n📋 Step 6: Storing vectors in Pinecone...");
-		await storeVectors(vectorizedChunks);
+		await storeVectors(vectorizedChunks, fileId, fileName);
 
 		// Step 7: Send response
 		console.log("\n" + "=".repeat(60));
@@ -60,7 +66,8 @@ exports.uploadPDF = async (req, res) => {
 		return successResponse(
 			res,
 			{
-				fileName: req.file.originalname,
+				fileId: fileId,
+				fileName: fileName,
 				chunks: chunks.length,
 				textLength: text.length,
 				preview: text.slice(0, 500),
