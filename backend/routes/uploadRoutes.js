@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const router = express.Router();
-const { uploadPDF } = require('../controller/upload-controller');
+const { uploadPDF } = require('../controller/uploadController');
 const fs = require('fs');
 const { uploadPDFValidator } = require('../validator/uploadValidator');
 
